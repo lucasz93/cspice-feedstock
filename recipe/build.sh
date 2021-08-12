@@ -12,6 +12,9 @@ fi
 CSPICENM=cspice.66.a
 CSUPPTNM=csupport.66.a
 
+#CFLAGS="$CFLAGS -O0 -ggdb3"
+CFLAGS="$CFLAGS -O2"
+
 #########################################
 # Build Shared library
 #########################################
@@ -21,7 +24,7 @@ cd ${SRC_DIR}/lib
 rm cspice.a
 rm csupport.a
 #  compile c code
-ls ./../src/cspice/*.c | parallel --max-args=1 "${CC} ${CFLAGS} -Iinclude -c -fPIC -O2 -ansi -pedantic {1}"
+ls ./../src/cspice/*.c | parallel --max-args=1 "${CC} ${CFLAGS} -Iinclude -c -fPIC -std=c11 -pedantic {1}"
 #  make the shared library
 ${CC} ${EXTRA_FLAGS} -fPIC -O2 -pedantic -o ${LIBNAME} *.o ${LDFLAGS} -lm
 #  cd up to src directory
@@ -71,6 +74,7 @@ cp $(find $(find ${SRC_DIR} -name "exe" -type d) -type f) ${PREFIX}/bin
 cp lib/${LIBNAME} ${PREFIX}/lib/
 cp lib/${CSPICENM} ${PREFIX}/lib/
 cp lib/${CSUPPTNM} ${PREFIX}/lib/
+cp src/cspice/cspice_state.h include/
 cp include/*.h ${PREFIX}/include/cspice/
 #  finally make symbolic links for sans version file names
 if [ "$(uname)" == "Darwin" ];
