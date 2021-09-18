@@ -14,6 +14,7 @@ CSUPPTNM=csupport.66.a
 
 #CFLAGS="$CFLAGS -O0 -ggdb3"
 CFLAGS="$CFLAGS -O2"
+#CFLAGS="$CFLAGS -O2 -pg"
 
 #########################################
 # Build Shared library
@@ -24,7 +25,7 @@ cd ${SRC_DIR}/lib
 rm cspice.a
 rm csupport.a
 #  compile c code
-ls ./../src/cspice/*.c | parallel --max-args=1 "${CC} ${CFLAGS} -Iinclude -c -fPIC -std=c11 -pedantic {1}"
+ls ./../src/cspice/*.c | parallel --max-args=1 "${CC} ${CFLAGS} -Iinclude -c -fPIC -ansi -pedantic -Wno-overlength-strings {1}"
 #  make the shared library
 ${CC} ${EXTRA_FLAGS} -fPIC -O2 -pedantic -o ${LIBNAME} *.o ${LDFLAGS} -lm
 #  cd up to src directory
