@@ -22,8 +22,8 @@ CFLAGS="$CFLAGS -O2"
 #  cd to lib dir
 cd ${SRC_DIR}/lib
 #  rm static libraries, needed for next static build steps
-rm cspice.a
-rm csupport.a
+rm -f cspice.a
+rm -f csupport.a
 #  compile c code
 ls ./../src/cspice/*.c | parallel --max-args=1 "${CC} ${CFLAGS} -Iinclude -c -fPIC -ansi -pedantic -Wno-overlength-strings {1}"
 #  make the shared library
