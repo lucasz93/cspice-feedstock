@@ -1,73 +1,63 @@
-# This file created by conda-build 3.21.4
-# meta.yaml template originally from:
-# /home/conda/recipe_root, last modified Sun Apr 11 00:46:54 2021
-# ------------------------------------------------
+{% set name = "cspice" %}
+{% set version = "66" %}
 
 package:
-  name: cspice
-  version: '66'
+  name: {{ name|lower }}
+  version: {{ version }}
+
 source:
   path: ../../cspice
+  
+#  patches:
+#    - 0001-patch-for-n66-dskx02.c.patch  # [not win]
+#    - 0002-patch-for-n66-subpnt.c.patch  # [not win]
+#    - 0001-patch-for-n66-dskx02.c-windows.patch  # [win]
+#    - 0002-patch-for-n66-subpnt.c-windows.patch  # [win]
+#    - 0003_remove_m64_linux.patch  # [linux64 or aarch64]
+#    - 0003_remove_m64_osx.patch  # [osx]
+#    - 0004_inquire_unistd.patch  # [osx]
+
 build:
-  number: '1014'
-  string: h7f98852_1014
+  number: 1014
+
 requirements:
   build:
-    - _libgcc_mutex 0.1 conda_forge
-    - _openmp_mutex 4.5 1_gnu
-    - binutils_impl_linux-64 2.35.1 h193b22a_2
-    - binutils_linux-64 2.35 h67ddf6f_30
-    - gcc_impl_linux-64 9.3.0 h70c0ae5_18
-    - gcc_linux-64 9.3.0 hf25ea35_30
-    - kernel-headers_linux-64 2.6.32 h77966d4_13
-    - ld_impl_linux-64 2.35.1 hea4e1c9_2
-    - libgcc-devel_linux-64 9.3.0 h7864c58_18
-    - libgcc-ng 9.3.0 h2828fa1_18
-    - libgomp 9.3.0 h2828fa1_18
-    - libstdcxx-ng 9.3.0 h6de172a_18
-    - ncurses 6.2 h58526e2_4
-    - sysroot_linux-64 2.12 h77966d4_13
-    - tcsh 6.22.03 hfa5affc_0
-  host:
-    - _libgcc_mutex 0.1 conda_forge
-    - _openmp_mutex 4.5 1_gnu
-    - libgcc-ng 9.3.0 h2828fa1_18
-    - libgomp 9.3.0 h2828fa1_18
-  run:
-    - libgcc-ng >=9.3.0
+    - {{ compiler('c') }}
+    - tcsh  # [not win]
+    - parallel
+
 test:
+  requires:
+    - {{ compiler('c') }}
+
+  files:
+    - test_cspice.c
+  
   commands:
 # Tools haven't been converted, so they won't work.
 #    - "version" 
 #    - "chronos"
-    - $CC test_cspice.c -I$PREFIX/include -L$PREFIX/lib -lcspice -o test_cspice
-    - LD_LIBRARY_PATH=$PREFIX/lib ./test_cspice
+    - "$CC test_cspice.c -I$PREFIX/include -L$PREFIX/lib -lcspice -o test_cspice"  # [not win]
+    - "LD_LIBRARY_PATH=$PREFIX/lib ./test_cspice"  # [not win] 
+
 #  downstreams:
-#    - mechsoft::spiceypy
-  files:
-    - test_cspice.c
-  requires:
-    - gcc_linux-64 9.*
+#    - mechsoft::spiceypy  # [not win]
+
 about:
-  description: 'SPICE is an ancillary information system that provides scientists
-    and
-
-    engineers the capability to include space geometry and event data into
-
-    mission design, science observation planning, and science data analysis
-
-    software.
-
-    '
-  doc_url: https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/index.html
   home: https://naif.jpl.nasa.gov/naif/toolkit.html
   license: MIT
   license_family: MIT
   license_file: LICENSE.txt
-  summary: NASA ancillary information system
+  summary: 'NASA ancillary information system'
+
+  description: |
+      SPICE is an ancillary information system that provides scientists and
+      engineers the capability to include space geometry and event data into
+      mission design, science observation planning, and science data analysis
+      software.
+  doc_url: https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/index.html
+
 extra:
-  copy_test_source_files: true
-  final: true
   recipe-maintainers:
-    - AndrewAnnex
     - astrojuanlu
+    - AndrewAnnex
