@@ -80,9 +80,9 @@ cp include/*.h ${PREFIX}/include/cspice/
 #  finally make symbolic links for sans version file names
 if [ "$(uname)" == "Darwin" ];
 then
-    ln -s ${PREFIX}/lib/${LIBNAME} ${PREFIX}/lib/libcspice.dylib
+    ln -f -s ${PREFIX}/lib/${LIBNAME} ${PREFIX}/lib/libcspice.dylib
 else
-    ln -s ${PREFIX}/lib/${LIBNAME} ${PREFIX}/lib/libcspice.so
+    ln -f -s ${PREFIX}/lib/${LIBNAME} ${PREFIX}/lib/libcspice.so
 fi
-ln -s ${PREFIX}/lib/${CSPICENM} ${PREFIX}/lib/cspice.a
-ln -s ${PREFIX}/lib/${CSUPPTNM} ${PREFIX}/lib/csupport.a
+ln -f -s ${PREFIX}/lib/${CSPICENM} ${PREFIX}/lib/cspice.a
+ln -f -s ${PREFIX}/lib/${CSUPPTNM} ${PREFIX}/lib/csupport.a
